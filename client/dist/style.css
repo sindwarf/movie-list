@@ -1,8 +1,33 @@
 body {
+  margin: auto;
+  text-align: center;
+  width: 80%;
   font-family: sans-serif, arial;
+  background-color: lightgray;
 }
 
-.page-title {
-  width: 100%;
-  align-content: center;
+.pagetitle {
+  border-style: solid;
+  border-radius: 10px;
+  border-color: red;
+}
+
+.movielisttitle{
+  text-decoration: underline;
+}
+
+.movielist{
+
+}
+
+.movielistitem{
+  text-align: left;
+}
+
+.search{
+
+}
+
+.addmovie{
+
 }

@@ -1,8 +1,9 @@
 import React from 'react';
 
 const Search = ({searchMovie}) => (
-  <div>
-    <form onSubmit={(e) => (searchMovie(e))} type="text">
+  <div className="search">
+    <form onSubmit={(e) => {return (searchMovie(e));}
+  } type="text">
       <input type="text"/>
       <input type="submit" value="Go!"/>
     </form>

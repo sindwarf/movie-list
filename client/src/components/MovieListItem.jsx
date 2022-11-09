@@ -1,7 +1,7 @@
 import React from 'react';
 
 const MovieListItem = ({movie}) => (
-  <div>
+  <div className="movielistitem">
     <div>{movie.title}</div>
   </div>
 );
