@@ -12,6 +12,8 @@ app.get('/api/movies', movieController.get);
 
 app.post('/api/movies', movieController.post);
 
+app.put('/api/movies', movieController.put);
+
 
 app.listen(PORT, () => {
   console.log(`Server listening on port: ${PORT}`);

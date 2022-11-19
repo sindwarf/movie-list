@@ -9,18 +9,33 @@ const {useEffect, useState, forceUpdate} = React;
 
 const App = (props) => {
 
-
-  let movieData = [];
-
   const [isWatchedFilter, setIsWatchedFilter] = useState(false);
-  const [movies, setMovieData] = useState(movieData);
+  const [movies, setMovieData] = useState([]);
   const [displayedMovies, setDisplayedMovies] = useState(movies);
+  const [stateChange, setState] = useState(true);
 
-  //  TODO write get and set function
+  useEffect(() => {//triggers on initial render
+    axios.get('http://localhost:3000/api/movies').then((response) => {
+      //console.log(response.data);
+      setMovieData(response.data);
+      setDisplayedMovies(response.data);
+      }).catch((err) => {
+        console.log(err);
+      });
+  }, [stateChange]);
+
+
+
+
 
   const isWatched = (movie) => {
-    movie.isWatched = !movie.isWatched;
-    toggleWatched(!movie.isWatched);
+    movie.isWatched = !movie.isWatched;//wtf is this?
+    axios.put('http://localhost:3000/api/movies', movie).then((response) => {
+      toggleWatched(!movie.isWatched);
+    }).catch((err) => {
+      console.log(err);
+    });
+
   }
 
   const addMovie = (event) => {
@@ -33,12 +48,15 @@ const App = (props) => {
     //use axios
     //movieData.push(movieObj);
     //write set function here
-    axios.get('/api/movies').then((response) => {
-      setMovieData(movieData);
-      setDisplayedMovies(movieData);
+    axios.post('http://localhost:3000/api/movies', movieObj).then((response) => {
+      console.log(response);
     }).catch((err) => {
       console.log(err);
-    });
+    })
+
+    setState(!stateChange);
+    //setMovieData(movieData);
+    //setDisplayedMovies(movieData);
   }
 
   const searchMovies = (e) => {
@@ -53,8 +71,7 @@ const App = (props) => {
       if(elements.isWatched === hasBeenWatched && elements.title.toLowerCase().includes(searchValue)) {
         curMovies.push(elements);
       }
-      console.log('is watched on elements', elements.isWatched);
-      console.log('current filter: ', isWatchedFilter + 'has been watched' + hasBeenWatched);
+      //console.log('current filter: ', isWatchedFilter + 'has been watched' + hasBeenWatched);
 
     }
     if(curMovies.length === 0) {

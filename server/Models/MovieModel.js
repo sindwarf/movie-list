@@ -36,11 +36,15 @@ exports.get = (callback) => {
 
 exports.post = (params, callback) => {
   //callback(null, `You sent to model ${movie}`);
-  console.log(params);
-  let q = `INSERT INTO movies (title, isWatched) VALUES ('?', ?)`;
+  //console.log(params);
+  let q = `INSERT INTO movies (title, isWatched) VALUES (?, ?)`;
   db.query(q, params, callback);
 }
 
+exports.put = (params, callback) => {
+let q = 'UPDATE movies SET isWatched = ? where title like ?';
+db.query(q, params, callback);
+}
 
 // let queryStr = 'insert into messages(text, username_id, roomname) \
 // values (?, (select id from usernames where text = ? limit 1), ?)';

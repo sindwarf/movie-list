@@ -4,7 +4,7 @@ USE movies;
 
 CREATE TABLE movies(
 id INTEGER(11) AUTO_INCREMENT,
-title VARCHAR(200),
+title VARCHAR(200) NOT NULL,
 isWatched INTEGER(2),
 PRIMARY KEY(id)
 );
