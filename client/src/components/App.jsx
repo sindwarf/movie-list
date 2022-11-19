@@ -2,89 +2,74 @@ import React from 'react';
 import AddMovie from '/client/src/components/AddMovie.jsx';
 import Search from '/client/src/components/Search.jsx';
 import MovieList from '/client/src/components/MovieList.jsx';
+const axios = require('axios').default;
+// import Parse from '/client/src/components/Parse.js';
 
-const {useState} = React;
+const {useEffect, useState, forceUpdate} = React;
 
 const App = (props) => {
-  let movieData = [
-    // {title: 'Mean Girls'},
-    // {title: 'Hackers'},
-    // {title: 'The Grey'},
-    // {title: 'Sunshine'},
-    // {title: 'Ex Machina'},
-    // {title: 'Lord of The Rings'},
-    // {title: 'Star Wars'},
-    // {title: 'The Gray Man'},
-    // {title: 'Bullet Train'},
-    // {title: 'Watcher'},
-    // {title: 'All Quiet on the Western Front'},
-    // {title: 'Descendant'},
-    // {title: 'The Good Nurse'},
-    // {title: 'Ticket to Paradise'},
-    // {title: 'Cars'},
-    // {title: 'Carter'},
-    // {title: 'Super Pets'},
-    // {title: 'Dr.Strange'},
-    // {title: 'Day Shift'},
-    // {title: 'Ambulance'},
-    // {title: 'Massive Talent'},
-    // {title: 'Elvis'},
-    // {title: 'Sell/Buy/Data'},
-    // {title: 'Policeman'},
-    // {title: 'Orphan: First Kill'},
-    // {title: 'Unhuman'},
-    // {title: 'Scream'},
-    // {title: 'Halloween Ends'},
-    // {title: 'Fresh'},
-    // {title: 'The Lost City'},
-    // {title: 'Rise'},
-    // {title: 'Luckiest Girl Alive'},
-    // {title: 'Thirteen Lives'},
-    // {title: 'Father Stu'},
-    // {title: 'The Outfit'},
-    // {title: 'Hustle'},
-    // {title: 'The Northman'},
-    // {title: 'Black Crab'},
-    // {title: 'Morbius'},
-    // {title: 'Prey'},
-    // {title: 'Uncharted'},
-    // {title: 'Luck'},
-    // {title: 'The Bad Guys'},
-    // {title: 'Cheaper By The Dozen'},
-    // {title: 'Sonic 2'},
-    // {title: 'LightYear'},
 
-  ];
 
+  let movieData = [];
+
+  const [isWatchedFilter, setIsWatchedFilter] = useState(false);
   const [movies, setMovieData] = useState(movieData);
   const [displayedMovies, setDisplayedMovies] = useState(movies);
 
+  //  TODO write get and set function
+
+  const isWatched = (movie) => {
+    movie.isWatched = !movie.isWatched;
+    toggleWatched(!movie.isWatched);
+  }
+
   const addMovie = (event) => {
     event.preventDefault();
-    movieData = movies;
+    let movieData = [...movies];
     let movieObj = {
-      title: event.target[0].value
+      title: event.target[0].value,
+      isWatched: false
     };
-
-    movieData.push(movieObj);
-    setMovieData(movieData);
+    //use axios
+    //movieData.push(movieObj);
+    //write set function here
+    axios.get('/api/movies').then((response) => {
+      setMovieData(movieData);
+      setDisplayedMovies(movieData);
+    }).catch((err) => {
+      console.log(err);
+    });
   }
 
   const searchMovies = (e) => {
     e.preventDefault();
     let curSearch = e.target[0].value.toLowerCase();
+    filterDisplayedMovies(isWatchedFilter, curSearch);
+  };
+
+  const filterDisplayedMovies = (hasBeenWatched, searchValue = '') => {
     let curMovies = [];
-    for(var elements of movies) {
-      if(elements.title.toLowerCase().includes(curSearch)) {
+    for(let elements of movies) {
+      if(elements.isWatched === hasBeenWatched && elements.title.toLowerCase().includes(searchValue)) {
         curMovies.push(elements);
       }
-    }
+      console.log('is watched on elements', elements.isWatched);
+      console.log('current filter: ', isWatchedFilter + 'has been watched' + hasBeenWatched);
 
+    }
     if(curMovies.length === 0) {
-      curMovies = [{title: "There are no movies by that title"}];
+      alert('There are no movies by that title');
     }
     setDisplayedMovies(curMovies);
   };
+
+
+  const toggleWatched = (toWatch) => {
+    setIsWatchedFilter(toWatch);
+    filterDisplayedMovies(toWatch);
+    };
+
+
 
   return (
 <div>
@@ -93,7 +78,7 @@ const App = (props) => {
     <hr/>
     <Search searchMovie={(e) => (searchMovies(e))}/>
     <hr/>
-    <MovieList movies={displayedMovies}/>
+    <MovieList movies={displayedMovies} isWatched={(movie) => (isWatched(movie))} toggleWatched={(toWatch) => toggleWatched(toWatch)}/>
 </div>
 
 );

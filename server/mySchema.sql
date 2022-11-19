@@ -1,0 +1,13 @@
+CREATE DATABASE movies;
+
+USE movies;
+
+CREATE TABLE movies(
+id INTEGER(11) AUTO_INCREMENT,
+title VARCHAR(200),
+isWatched INTEGER(2),
+PRIMARY KEY(id)
+);
+
+DESCRIBE movies;
+

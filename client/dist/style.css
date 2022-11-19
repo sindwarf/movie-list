@@ -20,8 +20,17 @@ body {
 
 }
 
+.movielistitemparent{
+  width:80%;
+}
+
 .movielistitem{
-  text-align: left;
+  float: left;
+  width:80%;
+}
+
+.movielistitem:hover{
+  cursor: pointer;
 }
 
 .search{
